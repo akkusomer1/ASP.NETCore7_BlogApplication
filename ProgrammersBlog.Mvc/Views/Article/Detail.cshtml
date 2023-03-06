@@ -1,0 +1,122 @@
+﻿@using ProgrammersBlog.Core.Concrete.Dtos.ArticleDto;
+@using ProgrammersBlog.Entities.Dtos;
+@model ArticleDetailViewModel
+@{
+    Layout = "_ArticleLayout";
+    ViewBag.Title = Model.ArticleDto.Article.Title;
+    ViewBag.Description = Model.ArticleDto.Article.SeoDescription;
+    ViewBag.Author = Model.ArticleDto.Article.SeoAuthor;
+    ViewBag.Tags = Model.ArticleDto.Article.SeoTags;
+}
+<!-- Post Content Column -->
+<div class="col-lg-8">
+
+    <!-- Title -->
+    <h1 class="mt-4">@Model.ArticleDto.Article.Title</h1>
+
+    <!-- Author -->
+    <p class="lead">
+        @Model.ArticleDto.Article.User.UserName tarafından @Model.ArticleDto.Article.CreatedDate.ToShortDateString() tarihinde paylaşılmıştır.
+    </p>
+
+    <hr>
+
+    <!-- Preview Image -->
+    <div class="text-center">
+        <img class="img-fluid rounded" src="~/img/@Model.ArticleDto.Article.Thumbnail" alt="@Model.ArticleDto.Article.Title">
+    </div>
+    <hr>
+
+    <!-- Post Content -->
+    @Html.Raw(@Model.ArticleDto.Article.Content)
+
+    <hr>
+
+    <p class="text-center">Okunma Sayısı: <span class="badge badge-info">@Model.ArticleDto.Article.ViewsCount</span> Yorum Sayısı: <span class="badge badge-warning">@Model.ArticleDto.Article.CommentCount</span></p>
+
+
+    <!-- Comments Form -->
+    <partial name="~/Views/Comment/_CommentAddPartial.cshtml" model="new CommentAddDto{ArticleId=Model.ArticleDto.Article.Id}"></partial>
+
+
+    <div id="comments">
+        @foreach (var comment in Model.ArticleDto.Article.Comments)
+        {
+            <!-- Single Comment -->
+  
+            <div class="media mb-4 card-body">
+                <img class="d-flex mr-3 rounded-circle" src="https://randomuser.me/api/portraits/men/64.jpg">
+                <div class="media-body">
+                    <h5 class="mt-0">@comment.CreatedByName</h5>
+                    @comment.Text
+                </div>
+            </div>
+      
+        }
+    </div>
+
+</div>
+
+<partial name="_ArticleDetailRightSideBarPartial.cshtml" model="@Model.ArticleDetailRightSideBarViewModel"></partial>
+
+
+@section Scripts{
+    <script>
+        $(document).ready(function () {
+
+            $(document).on('click', '#btnSave', function (event) {
+                event.preventDefault()
+                const form = $('#form-comment-add');
+                const actionUrl = form.attr('action')
+                const formDataToSend = form.serialize();
+           
+                $.post(actionUrl, formDataToSend).done(function (data) {
+                    const commentAjaxModel = jQuery.parseJSON(data)
+                    console.log(commentAjaxModel)              
+                    const newFormBody = $('.form-card', commentAjaxModel.CommentAddPartial);
+                    const cardBody = $('.form-card');
+                    cardBody.replaceWith(newFormBody)
+
+                    const isValid = newFormBody.find('[name="IsValid"]').val() === 'True'
+
+                    if (isValid) {
+                        const newSingleComment =
+                      `
+                        <div class="media mb-4">
+                          <img class="d-flex mr-3 rounded-circle" src="https://randomuser.me/api/portraits/men/64.jpg">
+                          <div class="media-body">
+                                      <h5 class="mt-0">${commentAjaxModel.CommentDto.Comment.CreatedByName}</h5>
+                                          ${commentAjaxModel.CommentDto.Comment.Text}
+                          </div>
+                      </div>
+                      `
+                       
+                        const newSingleCommentObject = $(newSingleComment);
+
+                        newSingleCommentObject.hide();
+                        $('#comments').append(newSingleCommentObject);
+                        newSingleCommentObject.fadeIn(3000);
+                        toastr.success("Yorumunuz başarıyla eklenmiştir.")             
+                        $("#btnSave").prop('disabled', true);
+
+                        setTimeout(function () {
+                            $("#btnSave").prop('disabled', false);
+                        }, 15000)
+                    }
+
+                    else {
+                        let listText = ""
+                        $("#validation-summary > ul > li").each(function () {
+                            let text = $(this).text()
+                            listText += `*${text}\n`
+                        });
+                        toastr.warning(listText)
+                    }
+                }).fail(function (err) {
+                    console.log(error);
+                })
+            })
+
+        })
+    </script>
+ }

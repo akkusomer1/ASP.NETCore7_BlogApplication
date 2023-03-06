@@ -1,0 +1,96 @@
+﻿@{
+    ViewBag.Title = "Silinmiş Makaleler";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+@using ProgrammersBlog.Core.Concrete.Dtos.ArticleDto
+@model ArticleListDto
+
+
+<ol class="breadcrumb mb-3 mt-2">
+    <li class="breadcrumb-item"><a asp-area="Admin" asp-controller="Home" asp-action="Index">Admin</a></li>
+    <li class="breadcrumb-item active"><a asp-area="Admin" asp-controller="Article" asp-action="DeletedArticles">Silinmiş Makaleler</a></li>
+</ol>
+
+<div class="card mb-4">
+    <div class="card-header">
+        <i class="fas fa-table mr-1"></i>
+        Silinmiş Makaleler
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-bordered" id="deletedArticlesTable" width="100%" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Kategori</th>
+                        <th>Başlık</th>
+                        <th>Küçük Resim</th>
+                        <th>Tarih</th>
+                        <th>Okunma Sayısı</th>
+                        <th>Yorum Sayısı</th>
+                        <th>Aktif Mi?</th>
+                        <th>Silindi Mi?</th>
+                        <th>Oluşturulma Tarihi</th>
+                        <th>Oluşturan Kullanıcı Adı</th>
+                        <th>Son Düzenlenme Tarihi</th>
+                        <th>Son Düzenleyen Kullanıcı Adı</th>
+                        <th>İşlemler</th>
+                    </tr>
+                </thead>
+                <tfoot>
+                    <tr>
+                        <th>#</th>
+                        <th>Kategori</th>
+                        <th>Başlık</th>
+                        <th>Küçük Resim</th>
+                        <th>Tarih</th>
+                        <th>Okunma Sayısı</th>
+                        <th>Yorum Sayısı</th>
+                        <th>Aktif Mi?</th>
+                        <th>Silindi Mi?</th>
+                        <th>Oluşturulma Tarihi</th>
+                        <th>Oluşturan Kullanıcı Adı</th>
+                        <th>Son Düzenlenme Tarihi</th>
+                        <th>Son Düzenleyen Kullanıcı Adı</th>
+                        <th>İşlemler</th>
+                    </tr>
+                </tfoot>
+                <tbody>
+                    @foreach (var item in Model.Articles)
+                    {
+                        <tr name="@item.Id">
+                            <td>@item.Id</td>
+                            <td>@item.Category.Name</td>
+                            <td>@item.Title</td>
+                            <td>
+                                <img src="~/img/@item.Thumbnail" class="my-image-table" />
+                            </td>
+                            <td>@item.CreatedDate.ToShortDateString()</td>
+                            <td>@item.ViewsCount</td>
+                            <td>@item.CommentCount</td>
+                            <td>@(item.IsActive ? "Evet" : "Hayır")</td>
+                            <td>@(item.IsDeleted ? "Evet" : "Hayır")</td>
+                            <td>@item.CreatedDate.ToShortDateString()</td>
+                            <td>@item.CreatedByName</td>
+                            <td>@item.UpdateDate.ToShortDateString()</td>
+                            <td>@item.UpdateByName</td>
+                            <td>
+                                <button class="btn btn-warning btn-sm btn-undo"  data-id="@item.Id"> <span class="fas fa-undo"></span> </button>
+
+                                <button class="btn btn-danger btn-delete btn-sm " data-id="@item.Id"><span class="fas fa-minus-circle"></span> </button>
+                            </td>
+                        </tr>
+                    }
+
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+
+@section scripts{
+    <script src="~/js/deletedArticles.js"></script>
+}

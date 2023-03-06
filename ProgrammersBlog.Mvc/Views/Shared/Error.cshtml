@@ -1,0 +1,20 @@
+﻿
+@using ProgrammersBlog.Core.Concrete.Entities
+@{
+    Layout = "_ErrorLayout";
+    ViewBag.Title = "Sunucu Hatası(500)";
+    var errorModel = ViewData["MvcErrorModel"] as ErrorModel;
+}
+
+<div class="col-lg-12">
+    <div class="text-center mt-4">
+        <h1 class="display-1">@errorModel.StatusCode</h1>
+        <p class="lead">@errorModel.Message</p>
+        <p class="lead">@errorModel.Detail</p>
+        <a class="text-warning" href="~/Home/Index">
+            <i class="fas fa-arrow-left mr-1"></i>
+            <strong>Anasayfa'ya dönmek için tıklayınız.</strong>
+        </a>
+    </div>
+</div>
+

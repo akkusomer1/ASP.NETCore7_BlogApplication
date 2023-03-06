@@ -1,0 +1,200 @@
+﻿@{
+    ViewBag.Title = "Makale Ekle";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+@model ArticleAddViewModel
+
+<ol class="breadcrumb mb-3 mt-2">
+    <li class="breadcrumb-item"><a asp-area="Admin" asp-controller="Home" asp-action="Index">Admin</a></li>
+    <li class="breadcrumb-item active"><a asp-area="Admin" asp-controller="Article" asp-action="Index">Makaleler</a></li>
+    <li class="breadcrumb-item active"><a asp-area="Admin" asp-controller="Article" asp-action="Add">Ekle</a></li>
+</ol>
+
+
+<form asp-action="Add" asp-controller="Article" method="post" enctype="multipart/form-data">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+    <div class="row">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-body">
+                    <div class="form-group">
+                        <input type="text" class="form-control" id="articleTitle" placeholder="Makale Başlığı" asp-for="Title"/>
+                        <span asp-validation-for="Title" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <textarea class="form-control" rows="13" id="text-editor" asp-for="Content"> </textarea>
+                        <span asp-validation-for="Content" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-header">Temel Konfigürasyonlar</div>
+                <div class="card-body">
+                    <div class="form-group">
+                        <label for="categoryList" asp-for="CategoryId"></label>
+                        <select id="categoryList" asp-for="CategoryId" asp-items="@Model.Categories" class="form-control">
+                            <option></option>                        
+                        </select>
+                        <span asp-validation-for="CategoryId" class="text-danger"></span>
+                    </div>
+
+
+                    <div class="form-group">
+                        <label for="datePicker" asp-for="Date"></label>
+                        <input asp-for="Date" type="text" value="@DateTime.UtcNow" id="datePicker" class="form-control" />
+                        <span asp-validation-for="Date" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="thumpnailUpload" asp-for="ThumbnailFile"></label>
+                        <input asp-for="ThumbnailFile" type="file" id="thumpnailUpload" accept="image/*" class="form-control-file" />
+                        <span asp-validation-for="ThumbnailFile" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-check">
+                        <input asp-for="IsActive" id="İsActive" type="checkbox" class="form-check-input" />
+                        <label asp-for="IsActive" for="İsActive" class="form-check-label"></label>
+                        <span asp-validation-for="IsActive" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-primary btn-block mt-4">Kaydet</button>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+
+        <div class="col-md-12 mt-3 ">
+            <div class="card">
+                <div class="card-header">Seo Optimizasyonu</div>
+                <div class="card-body">
+
+                    <div class="row">
+                        <div class="form-group col-md-6">
+                            <label asp-for="SeoAuthor" for="seoWriterName" class="form-label"></label>
+                            <input asp-for="SeoAuthor" type="text" class="form-control" id="seoWriterName" />
+                            <span asp-validation-for="SeoAuthor" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group col-md-6">
+                            <label asp-for="SeoTags" for="seoTags" class="form-la"></label>
+                            <input asp-for="SeoTags" type="text" class="form-control" id="seoTags" />
+                            <span asp-validation-for="SeoTags" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="SeoDescription" for="seoDescription"></label>
+                        <textarea asp-for="SeoDescription" class="form-control" id="seoDescription"></textarea>
+                        <span asp-validation-for="SeoDescription" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+
+
+    </div>
+
+</form>
+
+
+
+@section scripts{
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Trumbowyg/2.26.0/trumbowyg.min.js" integrity="sha512-ZfWLe+ZoWpbVvORQllwYHfi9jNHUMvXR4QhjL1I6IRPXkab2Rquag6R0Sc1SWUYTj20yPEVqmvCVkxLsDC3CRQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Trumbowyg/2.26.0/langs/tr.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Trumbowyg/2.26.0/plugins/colors/trumbowyg.colors.min.js" integrity="sha512-+TKrf2rSCeo+OOYzHDqo4udkV1lrdcngiq63v7Npr91KiR5SmIPI1QFOkdekdgZJJvV0JrMKHwP3ji4yOroYKA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Trumbowyg/2.26.0/plugins/emoji/trumbowyg.emoji.min.js" integrity="sha512-bGSayar7zxHjUBa0L4IaPx+192WNfAtb+2m1VMRc8nmRI+hehlikzby+MNTcgh+FbA0fLMa0GmM0IxEustPG+w==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Trumbowyg/2.26.0/plugins/fontfamily/trumbowyg.fontfamily.min.js" integrity="sha512-vcNYZYDuX5vLPJ8MUHyWd9buZO9sBkclJYevkKbKwpcGHFJGt0p+j1XYN79FM5XHETPdojdVVuLfBLqMlve7Mw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Trumbowyg/2.26.0/plugins/fontsize/trumbowyg.fontsize.min.js" integrity="sha512-vUNdbxhf07xQHDAqc/bGm1vSj5bNsD3iHrCEn0Pbf84Z6gr0DRvfH9Mre+wpouXsnOGQP3jxO53tziitBPr7ag==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.13.2/jquery-ui.min.js" integrity="sha512-57oZ/vW8ANMjR/KQ6Be9v/+/h6bq9/l3f0Oc7vn6qMqyhvPd1cvKBRWWpzu0QoneImqr2SkmO4MSqU+RpHom3Q==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+
+    <script>
+        $(document).ready(function(){
+
+            //Trumbowyg
+            $('#text-editor').trumbowyg({
+                btns: [
+                    ['viewHTML'],
+                    ['undo', 'redo'], 
+                    ['formatting'],
+                    ['strong', 'em', 'del'],
+                    ['superscript', 'subscript'],
+                    ['link'],
+                    ['insertImage'],
+                    ['justifyLeft', 'justifyCenter', 'justifyRight', 'justifyFull'],
+                    ['unorderedList', 'orderedList'],
+                    ['horizontalRule'],
+                    ['removeformat'],
+                    ['fullscreen'],
+                    ['foreColor', 'backColor'],
+                    ['emoji'],
+                    ['fontfamily'],
+                    ['fontsize']
+                ]
+            });
+            //Trumbowyg
+
+        
+            //Select2
+            $('#categoryList').select2({
+                theme: 'bootstrap4',
+                placeholder: "Lütfen kategori seçiniz",
+                allowClear: true
+            });
+            //Select2
+
+
+            //JqueryUI DatePicker
+            $("#datePicker").datepicker({
+                closeText: "kapat",
+                prevText: "geri",
+                nextText: "ileri",
+                currentText: "bugün",
+                monthNames: ["Ocak", "Şubat", "Mart", "Nisan", "Mayıs", "Haziran",
+                    "Temmuz", "Ağustos", "Eylül", "Ekim", "Kasım", "Aralık"],
+                monthNamesShort: ["Oca", "Şub", "Mar", "Nis", "May", "Haz",
+                    "Tem", "Ağu", "Eyl", "Eki", "Kas", "Ara"],
+                dayNames: ["Pazar", "Pazartesi", "Salı", "Çarşamba", "Perşembe", "Cuma", "Cumartesi"],
+                dayNamesShort: ["Pz", "Pt", "Sa", "Ça", "Pe", "Cu", "Ct"],
+                dayNamesMin: ["Pz", "Pt", "Sa", "Ça", "Pe", "Cu", "Ct"],
+                weekHeader: "Hf",
+                dateFormat: "dd.mm.yy",
+                firstDay: 1,
+                isRTL: false,
+                showMonthAfterYear: false,
+                yearSuffix: "",
+                duration:1000,
+                minDate:-3,
+                maxDate:+3
+            });
+            //JqueryUI DatePicker
+
+        })
+    </script> 
+}
+
+@section styles{
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Trumbowyg/2.26.0/ui/trumbowyg.min.css" integrity="sha512-Zi7Hb6P4D2nWzFhzFeyk4hzWxBu/dttyPIw/ZqvtIkxpe/oCAYXs7+tjVhIDASEJiU3lwSkAZ9szA3ss3W0Vug==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Trumbowyg/2.26.0/plugins/colors/ui/trumbowyg.colors.min.css" integrity="sha512-+WAAd5VI8qVDEeMCLYEo/zVr2Mtf155tau4PKxAczIXaUThk1FY8ckPwl8YMcC4PEt+NZ+oeEVkiW1HEBZ5L4g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Trumbowyg/2.26.0/plugins/emoji/ui/trumbowyg.emoji.min.css" integrity="sha512-YPjRgl/pLEBNRvXM9qDPWodrkj0jnpNZGoY1hfijTqUmJT+IuKsTkEPjdSIBG4Bklk2O06k/K+BoHdiIVd/GOg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@@ttskch/select2-bootstrap4-theme@x.x.x/dist/select2-bootstrap4.min.css">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.13.2/themes/cupertino/jquery-ui.min.css" integrity="sha512-9SEz2+WNpf9iyTy855xgweUvhu8Rz9BnU4d/MBFSFSh4kaAFeCA+/Otj5/NaB9PiMpjO1ajRNbplQTXa182X9A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+}
